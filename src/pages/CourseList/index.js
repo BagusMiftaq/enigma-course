@@ -1,6 +1,6 @@
 import {StyledListGroup, StyledText} from "./styles";
 import CourseItem from "./components/CourseItem";
-import {Button} from "react-bootstrap";
+import {Button, ButtonGroup} from "react-bootstrap";
 import React from "react";
 import {StyledContainer} from "../../components";
 
@@ -20,7 +20,7 @@ const List = ({data}) => {
 }
 
 const courseList = {
-    data : [
+    data: [
         {
             "courseId": "ec825c50-a5b8-47ff-8eca-356c1cef5aa8",
             "title": "Angular Advanced",
@@ -104,11 +104,48 @@ const courseList = {
 }
 
 const CourseList = ({onNavigate}) => {
+
     const [courses, setData] = React.useState(courseList);
+
+    const [size, setSize] = React.useState(3);
+
+    const [page, setPage] = React.useState(1);
+
+    const [count, setCount] = React.useState(courses.data.length)
+
+    const [maxPage, setMaxPage] = React.useState(Math.ceil(count / size));
+
+    let arr = [];
+
+    function Forward() {
+        setPage(prevState => prevState + 1);
+    }
+
+    function Backward() {
+        setPage(prevState => prevState - 1);
+    }
+
+    function Pagination() {
+        if (count > 0) {
+            arr = courses.data.slice((page - 1) * size, (page - 1) * size + size);
+
+            return <List data={arr}/>
+        } else {
+            return <Empty/>
+        }
+    }
+
     return (
         <StyledContainer>
-            <Button variant={"success"} onClick={() => onNavigate("/add-course")}>Add Course</Button>
-            {courses?.data?.length > 0 ? <List data={courses.data}/> : <Empty/>}
+            <div className={"d-flex justify-content-between"}>
+                <Button variant={"success"} onClick={() => onNavigate("/add-course")}>Add Course</Button>
+                <ButtonGroup className={"d-flex justify-content-between"}>
+                    <Button onClick={Backward} disabled={page === 1}>{`<<`}</Button>
+                    <Button onClick={Forward} disabled={page === maxPage}>{`>>`} </Button>
+                </ButtonGroup>
+            </div>
+
+            {Pagination()}
         </StyledContainer>
     )
 }
