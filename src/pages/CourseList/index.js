@@ -9,11 +9,11 @@ const Empty = () => (
     <StyledText>Data Kosong...</StyledText>
 )
 
-const List = ({data}) => {
+const List = ({data, onDelete}) => {
     return (
         <StyledListGroup>
             {data?.map((item, index) => (
-                <CourseItem data={item} key={item.courseId}/>
+                <CourseItem data={item} key={item.courseId} onDelete={onDelete}/>
             ))}
         </StyledListGroup>
     )
@@ -125,14 +125,18 @@ const CourseList = ({onNavigate}) => {
         setPage(prevState => prevState - 1);
     }
 
-    function Pagination() {
+    function Pagination({onDelete}) {
         if (count > 0) {
             arr = courses.data.slice((page - 1) * size, (page - 1) * size + size);
 
-            return <List data={arr}/>
+            return <List data={arr} onDelete={onDelete}/>
         } else {
             return <Empty/>
         }
+    }
+
+    function onDelete(id) {
+        setData({...courses, data: courses.data.filter(c => c.courseId !== id)})
     }
 
     return (
@@ -145,7 +149,7 @@ const CourseList = ({onNavigate}) => {
                 </ButtonGroup>
             </div>
 
-            {Pagination()}
+            {Pagination({onDelete})}
         </StyledContainer>
     )
 }
