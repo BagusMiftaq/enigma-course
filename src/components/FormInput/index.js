@@ -1,41 +1,36 @@
-import {
-    FormControl, FormLabel, FormGroup
-} from "react-bootstrap";
+import { FormControl, FormLabel, FormGroup } from "react-bootstrap";
 
-const FormInput =(
-    {label, type, placeholder, value, onChange}
-)=>{
-
-let props;
-switch(type){
+const FormInput = ({ label, type, placeholder, value, onChange }) => {
+  let props;
+  switch (type) {
     case "textarea":
-        props={as:type, value}
-        break;
+      props = { as: type, value };
+      break;
     case "file":
-        props={type}
-        break;
+      props = { type };
+      break;
     default:
-        props={type, value}
-        break;
-}
+      props = { type, value };
+      break;
+  }
 
-const onChangeHandler =(e)=>{
-    if(type === "file"){
-        onChange(e.target.files[0])
+  const onChangeHandler = (e) => {
+    if (type === "file") {
+      onChange(e.target.files[0]);
     } else {
-        onChange(e.target.value)
+      onChange(e.target.value);
     }
-}
-    return(
-        <FormGroup className="mb-3">
-        <FormLabel>{label}</FormLabel>
-            <FormControl
-                {...props}
-                placeholder={placeholder}
-                onChange={onChangeHandler}
-            />
+  };
+  return (
+    <FormGroup className="mb-3">
+      <FormLabel>{label}</FormLabel>
+      <FormControl
+        {...props}
+        placeholder={placeholder}
+        onChange={onChangeHandler}
+      />
     </FormGroup>
-    )
-}
+  );
+};
 
-export default FormInput
+export default FormInput;
