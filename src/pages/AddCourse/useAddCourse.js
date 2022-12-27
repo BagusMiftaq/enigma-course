@@ -21,7 +21,7 @@ const useAddCourse = () => {
     }
 
     React.useEffect(() => {
-        if (title && description && typeId && courseFile && level && duration) {
+        if (title && description  && typeId && courseFile && level && duration) {
             setDisable(false)
         } else setDisable(true)
     }, [courseFile, description, duration, level, title, typeId])
