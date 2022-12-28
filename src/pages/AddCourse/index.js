@@ -6,6 +6,8 @@ import {FormInput, StyledContainer} from "../../components";
 
 import {StyledTitle} from "./styles";
 import useAddCourse from "./useAddCourse";
+import {onAddCourse} from "../../store/action/courseAction";
+import {useDispatch} from "react-redux";
 
 const FORM_LIST = [
     { id: "title", label: "Title", type: "text", placeholder: "Enter course title" },
@@ -16,19 +18,12 @@ const FORM_LIST = [
     { id: "duration", label: "Duration", type: "text", placeholder: "Enter course duration" }
 ]
 
-const AddCourse = ({onNavigate, setCourses}) => {
+const AddCourse = ({onNavigate}) => {
     const { getter, setter } = useAddCourse();
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        setCourses((prevState) => {
-            const newCourses = {...prevState};
-            const payload = {
-                ...getter,
-                courseId: Math.random().toString()
-            }
-            newCourses?.data?.push(payload);
-            return newCourses;
-        })
+        dispatch(onAddCourse(...getter, {courseId: Math.random().toString()}))
 
         onNavigate("/");
     }

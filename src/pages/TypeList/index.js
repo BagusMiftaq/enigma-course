@@ -19,5 +19,7 @@ const List = ({data}) => {
 export default withPaginationList(List, {
     listData: typeList,
     label: "Course Type",
-    navAdd: "/add-course-type"
+    navAdd: "/add-course-type",
+    labela : "Course List",
+    navAdda : "/"
 });

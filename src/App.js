@@ -1,50 +1,53 @@
 import React from 'react';
 import './App.css';
 import {
-    AddCourse, CourseList, TypeList
+    AddCourse, CourseList, TypeList, AddType
 } from "./pages";
-import courseList from "./fixtures/courseList.json";
+import constants from "./constants";
+import {Provider} from "react-redux";
+import store from "./store/store";
+import NavBar from "./components/NavBar";
 
 function App() {
-    const [courses, setCourses] = React.useState(courseList);
     const [nav, setNav] = React.useState("/");
+    const [params, setParams]= React.useState(null);
+
     let Component;
-    let props = {};
+
+    const onNavigate = (route, params=null) => {
+        setNav(route);
+        setParams(params);
+    }
+
+    const menu = [
+        {name: "course-list", onNavigate: ()=> setNav(constants.ROUTES.COURSE_LIST)},
+        {name: "course-type", onNavigate: ()=> setNav(constants.ROUTES.COURSE_TYPE)}
+    ]
+
 
     switch (nav) {
-        case "/":
+        case constants.ROUTES.COURSE_LIST:
             Component = CourseList;
-            props = {
-                ...props,
-                courses
-            }
             break;
-        case "/add-course":
+        case constants.ROUTES.ADD_COURSE:
             Component = AddCourse;
-            props = {
-                ...props,
-                setCourses: setCourses
-            }
+            break;
+        case constants.ROUTES.ADD_COURSE_TYPE:
+            Component = AddType;
             break;
         case "/course-type":
             Component = TypeList;
-            props = {
-                ...props
-            }
             break;
         default:
             Component = CourseList;
-            props = {
-                ...props,
-                courses
-            }
             break;
     }
 
   return (
-    <div className="App">
-      <Component onNavigate={setNav} {...props} />
-    </div>
+    <Provider store={store}>
+        <NavBar menu={menu}/>
+      <Component onNavigate={onNavigate} params={params} />
+    </Provider>
   );
 }
 
