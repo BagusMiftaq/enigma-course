@@ -1,7 +1,7 @@
 import {Container, Navbar, NavLink} from "react-bootstrap";
 import {StyledNav} from "./styles";
 
-const NavBarCamp = ({menu}) => (
+const NavBar = ({menu}) => (
     <Navbar bg={'light'} expand={'light'} sticky={'top'}>
         <Container>
             <Navbar.Brand>Enigma Course</Navbar.Brand>
@@ -16,4 +16,4 @@ const NavBarCamp = ({menu}) => (
     </Navbar>
     )
 
-export default NavBarCamp
+export default NavBar

@@ -7,10 +7,13 @@ import constants from "./constants";
 import {Provider} from "react-redux";
 import store from "./store/store";
 import NavBar from "./components/NavBar";
+import EditCourse from "./pages/EditCourse";
 
 function App() {
     const [nav, setNav] = React.useState("/");
     const [params, setParams]= React.useState(null);
+
+    console.log("NAV", nav)
 
     let Component;
 
@@ -20,8 +23,8 @@ function App() {
     }
 
     const menu = [
-        {name: "course-list", onNavigate: ()=> setNav(constants.ROUTES.COURSE_LIST)},
-        {name: "course-type", onNavigate: ()=> setNav(constants.ROUTES.COURSE_TYPE)}
+        {name: "course-list", onNavigate:()=> setNav(constants.ROUTES.COURSE_LIST)},
+        {name: "course-type", onNavigate:()=> setNav(constants.ROUTES.COURSE_TYPE)}
     ]
 
 
@@ -35,8 +38,11 @@ function App() {
         case constants.ROUTES.ADD_COURSE_TYPE:
             Component = AddType;
             break;
-        case "/course-type":
+        case constants.ROUTES.COURSE_TYPE:
             Component = TypeList;
+            break;
+        case constants.ROUTES.EDIT_COURSE:
+            Component = EditCourse;
             break;
         default:
             Component = CourseList;
@@ -44,10 +50,10 @@ function App() {
     }
 
   return (
-    <Provider store={store}>
-        <NavBar menu={menu}/>
+      <>
+          <NavBar menu={menu}/>
       <Component onNavigate={onNavigate} params={params} />
-    </Provider>
+      </>
   );
 }
 

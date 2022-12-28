@@ -1,23 +1,23 @@
-    import constants from "../../constants";
+import constants from "../../constants";
 
 
-export const onAddCourse = (course) => {
+export const addCourse = (course) => {
     return {
         type : constants.ACTION.ADD_COURSE,
         payload : {
             courseId: Math.random().toString(36).substring(2,7),
             title:course.title,
-            desc:course.description,
+            description:course.description,
             file:course.courseFile,
             duration:course.duration,
             level:course.level,
-            courseTypeId: course.typeId
+            courseTypeId: course.courseTypeId
         }
 
     }
 }
 
-export const onEditCourse = (course) =>({
+export const editCourse = (course) =>({
     type : constants.ACTION.EDIT_COURSE,
     payload : course
 

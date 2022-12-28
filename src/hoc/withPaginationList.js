@@ -1,37 +1,30 @@
 import React from "react";
 import {Button} from "react-bootstrap";
 import {StyledContainer, EmptyState, Pagination} from "../components";
-import {useSelector} from "react-redux";
-import rootReducer from "../store/rootReducer";
 
 export default (ListComponent, opts) => {
     return (props) => {
 
+        console.log(props)
 
-        let listData;
+        const { label, navAdd} = opts;
 
-        const { navAdd, label, labela } = opts;
+        const {listData} = props;
 
-        if(navAdd==="/"){
-            listData = useSelector(state => state(rootReducer));
-        }
-
-        const [data, setData] = React.useState(listData);
         const [currentPage, setCurrentPage] = React.useState(1);
         const [recordsPerPage] = React.useState(3);
 
         const indexOfLastRecord = currentPage * recordsPerPage;
         const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-        const currentRecords = data?.data?.slice(indexOfFirstRecord, indexOfLastRecord);
-        const totalPage = Math.ceil(data?.data?.length / recordsPerPage);
+        const currentRecords = listData?.slice(indexOfFirstRecord, indexOfLastRecord);
+        const totalPage = Math.ceil(listData?.length / recordsPerPage);
 
         return (
             <>
                 <StyledContainer>
                     <Button variant="success" onClick={() => props.onNavigate(opts.navAdd)}>Add {label}</Button>
-                    <Button variant="success" onClick={() => props.onNavigate(opts.navAdda)}>{labela}</Button>
                     {currentRecords?.length > 0 ? (
-                        <ListComponent data={currentRecords} />
+                        <ListComponent data={currentRecords} {...props}/>
                     ): <EmptyState text={`Data ${label} Kosong...`} />}
                 </StyledContainer>
                 <Pagination

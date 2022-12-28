@@ -6,8 +6,9 @@ import {FormInput, StyledContainer} from "../../components";
 
 import {StyledTitle} from "./styles";
 import useAddCourse from "./useAddCourse";
-import {onAddCourse} from "../../store/action/courseAction";
-import {useDispatch} from "react-redux";
+import {addCourse, onAddCourse} from "../../store/action/courseAction";
+import {connect, useDispatch} from "react-redux";
+import constants from "../../constants";
 
 const FORM_LIST = [
     { id: "title", label: "Title", type: "text", placeholder: "Enter course title" },
@@ -18,14 +19,13 @@ const FORM_LIST = [
     { id: "duration", label: "Duration", type: "text", placeholder: "Enter course duration" }
 ]
 
-const AddCourse = ({onNavigate}) => {
+const AddCourse = ({addCourse, onNavigate}) => {
     const { getter, setter } = useAddCourse();
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        dispatch(onAddCourse(...getter, {courseId: Math.random().toString()}))
-
-        onNavigate("/");
+        addCourse(getter)
+        onNavigate(constants.ROUTES.COURSE_LIST)
     }
 
     return (
@@ -46,7 +46,7 @@ const AddCourse = ({onNavigate}) => {
                     <Button variant="success" onClick={handleSubmit} disabled={getter.isDisable}>
                         Submit
                     </Button>
-                    <Button variant="secondary" onClick={() => onNavigate("/")}>
+                    <Button variant="secondary" onClick={() => onNavigate(constants.ROUTES.COURSE_LIST)}>
                         Cancel
                     </Button>
                 </ButtonGroup>
@@ -55,4 +55,8 @@ const AddCourse = ({onNavigate}) => {
     )
 }
 
-export default AddCourse;
+const mapDispatchToProps = (dispatch) => ({
+    addCourse: course => dispatch(addCourse(course))
+})
+
+export default connect(null, mapDispatchToProps) (AddCourse);

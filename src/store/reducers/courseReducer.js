@@ -5,9 +5,9 @@ const initialState = {
     courseList: [
         ...courseList.data
     ],
-    // pagination: {
-    //     count, totalPage, page, size
-    // }
+    pagination: {
+        count: courseList.count, totalPage:courseList.totalPage, page:courseList.page, size: courseList.size
+    }
 }
 
 const courseReducer = (state = initialState, action) => {
