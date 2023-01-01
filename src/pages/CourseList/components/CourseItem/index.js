@@ -3,7 +3,7 @@ import {StyledListItem} from "./styles";
 import {Button, ButtonGroup, Col} from "react-bootstrap";
 
 const CourseItem = ({data, onNavigateToEdit, onDelete}) => {
-    console.log("test",data?.description)
+    // console.log("test",data?.description)
     return (
         <StyledListItem action>
             <Col>

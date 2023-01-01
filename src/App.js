@@ -8,6 +8,7 @@ import {Provider} from "react-redux";
 import store from "./store/store";
 import NavBar from "./components/NavBar";
 import EditCourse from "./pages/EditCourse";
+import EditType from "./pages/EditType";
 
 function App() {
     const [nav, setNav] = React.useState("/");
@@ -43,6 +44,9 @@ function App() {
             break;
         case constants.ROUTES.EDIT_COURSE:
             Component = EditCourse;
+            break;
+        case constants.ROUTES.EDIT_COURSE_TYPE:
+            Component = EditType;
             break;
         default:
             Component = CourseList;

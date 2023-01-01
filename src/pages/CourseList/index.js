@@ -14,10 +14,8 @@ const Empty = () => (
 
 const List = ({data, onNavigate}) => {
 
-
     const dispacth = useDispatch();
 
-    console.log(data);
     const onNavigateToEdit = (id) => () => {
         onNavigate(constants.ROUTES.EDIT_COURSE, {id});
     }

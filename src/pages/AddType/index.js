@@ -3,26 +3,21 @@ import {StyledTitle} from "../AddCourse/styles";
 import {Button, ButtonGroup, Form} from "react-bootstrap";
 import {FormInput, StyledContainer} from "../../components";
 import React from "react";
+import {connect, useDispatch} from "react-redux";
+import {addCourseType} from "../../store/action/courseTypeAction";
+import constants from "../../constants";
 
 const FORM_LIST = [
     {id: "typeName", label: "Course Type Name", type: "text", placeholder: "Enter course type"}
 ]
 
-const AddType = ({onNavigate, setTypeName}) => {
+const AddType = ({addCourseType,onNavigate}) => {
     const {getter, setter} = useTypeCourse();
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        setTypeName((prevState) => {
-            const newType = {...prevState};
-            const payload = {
-                ...getter,
-                courseTypeId: Math.random().toString()
-            }
-            newType?.data?.push(payload);
-            return newType;
-        })
-
-        onNavigate("/course-type")
+        addCourseType(getter)
+        onNavigate(constants.ROUTES.COURSE_TYPE)
     }
 
     console.log(getter)
@@ -45,7 +40,7 @@ const AddType = ({onNavigate, setTypeName}) => {
                     <Button variant="success" onClick={handleSubmit} disabled={getter.isDisable}>
                         Submit
                     </Button>
-                    <Button variant="secondary" onClick={() => onNavigate("/course-type")}>
+                    <Button variant="secondary" onClick={() => onNavigate(constants.ROUTES.COURSE_TYPE)}>
                         Cancel
                     </Button>
                 </ButtonGroup>
@@ -54,4 +49,8 @@ const AddType = ({onNavigate, setTypeName}) => {
     )
 }
 
-export default AddType;
+const mapDispatchToProps = (dispatch) => ({
+    addCourseType: courseType => dispatch(addCourseType(courseType))
+})
+
+export default connect(null, mapDispatchToProps) (AddType);

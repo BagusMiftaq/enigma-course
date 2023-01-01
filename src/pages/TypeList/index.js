@@ -3,23 +3,40 @@ import React from "react";
 import typeList from "../../fixtures/courseType.json";
 import withPaginationList from "../../hoc/withPaginationList";
 
-import {StyledListGroup} from "./styles";
 import TypeItem from "./components/TypeItem";
 import {connect, useDispatch} from "react-redux";
-import {StyledText} from "../CourseList/styles";
+import {StyledListGroup, StyledText} from "./styles";
+import constants from "../../constants";
+import {deleteCourseType} from "../../store/action/courseTypeAction";
 
 const Empty = () => (
     <StyledText>Data Kosong...</StyledText>
 )
 
-const List = ({data}) => {
+const List = ({data, onNavigate}) => {
 
     const dispacth = useDispatch();
+
+    const onNavigateToEdit = (id) => () => {
+        onNavigate(constants.ROUTES.EDIT_COURSE_TYPE, {id});
+    }
+
+    const onDelete = (id) => () => {
+        const isOk = window.confirm(("Are u sure want to delete it?"));
+        if (isOk){
+            dispacth(deleteCourseType(id))
+        }
+    }
 
     return (
         <StyledListGroup>
             {data?.map((item) => (
-                <TypeItem data={item} key={item.courseTypeId} />
+                <TypeItem
+                    data={item}
+                    key={item.courseTypeId}
+                    onNavigateToEdit={onNavigateToEdit(item.courseTypeId)}
+                    onDelete={onDelete(item.courseTypeId)}
+                />
             ))}
         </StyledListGroup>
     )
