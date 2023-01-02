@@ -3,3 +3,5 @@ export {default as FormInput} from "./FormInput";
 export {default as EmptyState} from "./EmptyState";
 export {default as Pagination} from "./Pagination";
 export {default as NavBar} from "./NavBar";
+export {default as FormText} from "./FormText";
+export {default as FormFile} from "./FormFile";

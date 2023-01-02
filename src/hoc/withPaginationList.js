@@ -7,8 +7,6 @@ export default (ListComponent, opts) => {
     return (props) => {
         const  onNavigate=useNavigate();
 
-        console.log(props)
-
         const { label, navAdd} = opts;
 
         const {listData} = props;
@@ -24,7 +22,7 @@ export default (ListComponent, opts) => {
         return (
             <>
                 <StyledContainer>
-                    <Button variant="success" onClick={() => onNavigate(opts.navAdd)}>Add {label}</Button>
+                    <Button variant="success" onClick={() => onNavigate(navAdd)}>Add {label}</Button>
                     {currentRecords?.length > 0 ? (
                         <ListComponent data={currentRecords} {...props}/>
                     ): <EmptyState text={`Data ${label} Kosong...`} />}
