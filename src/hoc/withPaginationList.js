@@ -1,9 +1,11 @@
 import React from "react";
 import {Button} from "react-bootstrap";
 import {StyledContainer, EmptyState, Pagination} from "../components";
+import {useNavigate} from "react-router-dom";
 
 export default (ListComponent, opts) => {
     return (props) => {
+        const  onNavigate=useNavigate();
 
         console.log(props)
 
@@ -22,7 +24,7 @@ export default (ListComponent, opts) => {
         return (
             <>
                 <StyledContainer>
-                    <Button variant="success" onClick={() => props.onNavigate(opts.navAdd)}>Add {label}</Button>
+                    <Button variant="success" onClick={() => onNavigate(opts.navAdd)}>Add {label}</Button>
                     {currentRecords?.length > 0 ? (
                         <ListComponent data={currentRecords} {...props}/>
                     ): <EmptyState text={`Data ${label} Kosong...`} />}

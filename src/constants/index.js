@@ -10,12 +10,13 @@ const constants = {
 
     },
     ROUTES : {
-        COURSE_LIST : "/",
-        COURSE_TYPE : "/course-type",
-        ADD_COURSE : "/add-course",
-        EDIT_COURSE : "/edit-course",
-        ADD_COURSE_TYPE : "/add-course-type",
-        EDIT_COURSE_TYPE: "/edit-course-type"
+        COURSE_LIST : "/course",
+        COURSE_TYPE : "/type",
+        ADD_COURSE : "/course/add",
+        EDIT_COURSE : "/course/edit",
+        ADD_COURSE_TYPE : "/type/add",
+        EDIT_COURSE_TYPE: "/type/edit",
+        DASHBOARD : "/"
     }
 }
 

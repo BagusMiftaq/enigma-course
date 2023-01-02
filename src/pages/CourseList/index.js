@@ -7,18 +7,19 @@ import withPaginationList from "../../hoc/withPaginationList";
 import {connect, useDispatch} from "react-redux";
 import constants from "../../constants";
 import {deleteCourse} from "../../store/action/courseAction";
+import {useNavigate} from "react-router-dom";
 
 const Empty = () => (
     <StyledText>Data Kosong...</StyledText>
 )
 
-const List = ({data, onNavigate}) => {
+const List = ({data}) => {
 
     const dispacth = useDispatch();
-
+    const onNavigate = useNavigate();
     const onNavigateToEdit = (id) => () => {
-        console.log("ini id",id)
-        onNavigate(constants.ROUTES.EDIT_COURSE, {id});
+        onNavigate(`${constants.ROUTES.EDIT_COURSE}/${id}`);
+        console.log("Routes",`${constants.ROUTES.EDIT_COURSE}/${id}`)
     }
 
     const onDelete = (id)=> () => {
@@ -51,5 +52,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, null) (withPaginationList(List, {
     label : "Course List",
-    navAdd : "/add-course"
+    navAdd : constants.ROUTES.ADD_COURSE
 }));

@@ -8,21 +8,22 @@ import {connect, useDispatch} from "react-redux";
 import {StyledListGroup, StyledText} from "./styles";
 import constants from "../../constants";
 import {deleteCourseType} from "../../store/action/courseTypeAction";
+import {useNavigate} from "react-router-dom";
 
 const Empty = () => (
     <StyledText>Data Kosong...</StyledText>
 )
 
-const List = ({data, onNavigate}) => {
+const List = ({data}) => {
 
     const dispacth = useDispatch();
-
+    const onNavigate = useNavigate();
     const onNavigateToEdit = (id) => () => {
-        onNavigate(constants.ROUTES.EDIT_COURSE_TYPE, {id});
+        onNavigate(`${constants.ROUTES.EDIT_COURSE_TYPE}/${id}`);
     }
 
     const onDelete = (id) => () => {
-        const isOk = window.confirm(("Are u sure want to delete it?"));
+        const isOk = window.confirm(("Are U sure want to delete it?"));
         if (isOk){
             dispacth(deleteCourseType(id))
         }
@@ -49,5 +50,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, null) (withPaginationList(List, {
     label: "Course Type",
-    navAdd: "/add-course-type",
+    navAdd: constants.ROUTES.ADD_COURSE_TYPE,
 }));

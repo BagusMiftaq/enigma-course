@@ -9,56 +9,43 @@ import store from "./store/store";
 import NavBar from "./components/NavBar";
 import EditCourse from "./pages/EditCourse";
 import EditType from "./pages/EditType";
+import {Outlet, Route, Routes} from "react-router-dom";
+
+const CourseWrapper = () => (
+    <>
+        <h1>Course Page</h1>
+        <Outlet/>
+    </>
+)
+
+const TypeWrapper = () => (
+    <>
+        <h1>Type Course Page</h1>
+        <Outlet/>
+    </>
+)
 
 function App() {
-    const [nav, setNav] = React.useState("/");
-    const [params, setParams]= React.useState(null);
 
-    console.log("NAV", nav)
-
-    let Component;
-
-    const onNavigate = (route, params=null) => {
-        setNav(route);
-        setParams(params);
-    }
-
-    const menu = [
-        {name: "course-list", onNavigate:()=> setNav(constants.ROUTES.COURSE_LIST)},
-        {name: "course-type", onNavigate:()=> setNav(constants.ROUTES.COURSE_TYPE)}
-    ]
-
-
-    switch (nav) {
-        case constants.ROUTES.COURSE_LIST:
-            Component = CourseList;
-            break;
-        case constants.ROUTES.ADD_COURSE:
-            Component = AddCourse;
-            break;
-        case constants.ROUTES.ADD_COURSE_TYPE:
-            Component = AddType;
-            break;
-        case constants.ROUTES.COURSE_TYPE:
-            Component = TypeList;
-            break;
-        case constants.ROUTES.EDIT_COURSE:
-            Component = EditCourse;
-            break;
-        case constants.ROUTES.EDIT_COURSE_TYPE:
-            Component = EditType;
-            break;
-        default:
-            Component = CourseList;
-            break;
-    }
-
-  return (
-      <>
-          <NavBar menu={menu}/>
-      <Component onNavigate={onNavigate} params={params} />
-      </>
-  );
+    return (
+        <div className="App">
+            <NavBar/>
+            <Routes>
+                <Route path={constants.ROUTES.DASHBOARD} element={<h1>Dashboard Page</h1>} index={true}/>
+                <Route path={constants.ROUTES.COURSE_LIST} element={<CourseWrapper/>}>
+                    <Route element={<CourseList/>} index={true}/>
+                    <Route path={constants.ROUTES.ADD_COURSE} element={<AddCourse/>}/>
+                    <Route path={`${constants.ROUTES.EDIT_COURSE}/:courseId?`} element={<EditCourse/>}/>
+                </Route>
+                <Route path={constants.ROUTES.COURSE_TYPE} element={<TypeWrapper/>}>
+                    <Route element={<TypeList/>} index={true}/>
+                    <Route path={constants.ROUTES.ADD_COURSE_TYPE} element={<AddType/>}/>
+                    <Route path={`${constants.ROUTES.EDIT_COURSE_TYPE}/:id?`} element={<EditType/>}/>
+                </Route>
+                <Route path={"*"} element={<h3>Page not Found</h3>}/>
+            </Routes>
+        </div>
+    )
 }
 
 export default App;

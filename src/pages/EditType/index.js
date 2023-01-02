@@ -5,17 +5,20 @@ import {Button, ButtonGroup, Form} from "react-bootstrap";
 import React from "react";
 import {editCourseType} from "../../store/action/courseTypeAction";
 import {connect} from "react-redux";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 const initialData = {
     typeName: ""
 }
 
-const EditType = ({onNavigate, params, editCourseType}) => {
+const EditType = ({editCourseType}) => {
     const [data, setData] = React.useState(initialData);
+    const onNavigate = useNavigate();
+    const param = useParams();
     React.useEffect(()=>{
-        const courseType = getCourseTypeById(params.id);
+        const courseType = getCourseTypeById(param.id);
         setData(courseType);
-    }, [params.id])
+    }, [param.id])
 
     const handleChange = (name) => (e) => {
         setData((prevData)=>({
@@ -27,7 +30,7 @@ const EditType = ({onNavigate, params, editCourseType}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const payload = {
-            courseTypeId: params.id,
+            courseTypeId: param.id,
             ...data
         };
 

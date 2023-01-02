@@ -9,6 +9,7 @@ import useAddCourse from "./useAddCourse";
 import {addCourse, onAddCourse} from "../../store/action/courseAction";
 import {connect, useDispatch} from "react-redux";
 import constants from "../../constants";
+import {useNavigate} from "react-router-dom";
 
 const FORM_LIST = [
     { id: "title", label: "Title", type: "text", placeholder: "Enter course title" },
@@ -19,10 +20,10 @@ const FORM_LIST = [
     { id: "duration", label: "Duration", type: "text", placeholder: "Enter course duration" }
 ]
 
-const AddCourse = ({addCourse, onNavigate}) => {
+const AddCourse = ({addCourse}) => {
     const { getter, setter } = useAddCourse();
     const dispatch = useDispatch();
-
+    const onNavigate = useNavigate();
     const handleSubmit = () => {
         addCourse(getter)
         onNavigate(constants.ROUTES.COURSE_LIST)

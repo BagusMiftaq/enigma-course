@@ -5,6 +5,7 @@ import constants from "../../constants";
 import {FormInput, StyledContainer} from "../../components";
 import {Button, ButtonGroup, Form} from "react-bootstrap";
 import {connect} from "react-redux";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 const initialData = {
     title: "",
@@ -19,16 +20,19 @@ const initialData = {
 
 }
 
-const EditCourse = ({onNavigate, params, editCourse}) => {
+const EditCourse = ({editCourse}) => {
     const [data, setData] = React.useState(initialData);
+    const onNavigate = useNavigate();
+    const params = useParams();
+    // const param = useLocation(params);
     React.useEffect(() => {
-        const course = getCourseById(params.id);
+        const course = getCourseById(params.courseId);
 
         course.duration = course.courseInfo.duration;
         course.level = course.courseInfo.level;
 
         setData(course);
-    }, [params.id])
+    }, [params.courseId])
 
     const handleChange = (name) => (e) => {
         setData((prevData) => ({
@@ -40,7 +44,7 @@ const EditCourse = ({onNavigate, params, editCourse}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const payload = {
-            courseId: params.id,
+            courseId: params.courseId,
             ...data,
             courseInfo:{
                 duration:data.duration,

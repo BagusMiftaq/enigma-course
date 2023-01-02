@@ -12,7 +12,6 @@ const TypeItem = ({data, onNavigateToEdit, onDelete}) => {
             <ButtonGroup>
                 <Button variant="primary" onClick={onNavigateToEdit}>Edit</Button>
                 <Button variant="danger" onClick={onDelete}>Delete</Button>
-                <Button variant="secondary">Download</Button>
             </ButtonGroup>
         </StyledListItem>
     )

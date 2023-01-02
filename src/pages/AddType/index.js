@@ -6,14 +6,17 @@ import React from "react";
 import {connect, useDispatch} from "react-redux";
 import {addCourseType} from "../../store/action/courseTypeAction";
 import constants from "../../constants";
+import {useNavigate} from "react-router-dom";
 
 const FORM_LIST = [
     {id: "typeName", label: "Course Type Name", type: "text", placeholder: "Enter course type"}
 ]
 
-const AddType = ({addCourseType,onNavigate}) => {
+const AddType = ({addCourseType}) => {
     const {getter, setter} = useTypeCourse();
     const dispatch = useDispatch();
+    const onNavigate = useNavigate();
+
 
     const handleSubmit = () => {
         addCourseType(getter)
