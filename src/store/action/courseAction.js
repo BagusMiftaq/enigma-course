@@ -9,9 +9,15 @@ export const addCourse = (course) => {
             title:course.title,
             description:course.description,
             file:course.courseFile,
-            duration:course.duration,
-            level:course.level,
-            courseTypeId: course.courseTypeId
+            courseInfo: {
+                duration:course.duration,
+                level:course.level,
+            },
+            courseType: {
+                courseTypeId: course.courseTypeId
+            }
+
+
         }
 
     }

@@ -17,6 +17,7 @@ const List = ({data, onNavigate}) => {
     const dispacth = useDispatch();
 
     const onNavigateToEdit = (id) => () => {
+        console.log("ini id",id)
         onNavigate(constants.ROUTES.EDIT_COURSE, {id});
     }
 

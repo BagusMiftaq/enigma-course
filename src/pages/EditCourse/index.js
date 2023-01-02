@@ -14,16 +14,19 @@ const initialData = {
         typeName: "",
     },
     file: null,
-    courseInfo : {
-        duration: "",
-        level: ""
-    }
+    duration: "",
+    level: ""
+
 }
 
 const EditCourse = ({onNavigate, params, editCourse}) => {
     const [data, setData] = React.useState(initialData);
     React.useEffect(() => {
         const course = getCourseById(params.id);
+
+        course.duration = course.courseInfo.duration;
+        course.level = course.courseInfo.level;
+
         setData(course);
     }, [params.id])
 
@@ -38,10 +41,14 @@ const EditCourse = ({onNavigate, params, editCourse}) => {
         e.preventDefault();
         const payload = {
             courseId: params.id,
-            ...data
+            ...data,
+            courseInfo:{
+                duration:data.duration,
+                level:data.level
+            },
         };
         delete payload.file;
-        delete payload.typeId;
+        delete payload.courseTypeId;
 
         editCourse(payload)
         onNavigate(constants.ROUTES.COURSE_LIST)
@@ -82,13 +89,13 @@ const EditCourse = ({onNavigate, params, editCourse}) => {
                     label={"Duration"}
                     type={"text"}
                     placeholder={"Enter duration"}
-                    value={data.courseInfo.duration}
+                    value={data.duration}
                     onChange={handleChange("duration")}/>
                 <FormInput
                     label={"Level"}
                     type={"text"}
                     placeholder={"Enter level"}
-                    value={data.courseInfo.level}
+                    value={data.level}
                     onChange={handleChange("level")}/>
 
                 <ButtonGroup size={"lg"}>
