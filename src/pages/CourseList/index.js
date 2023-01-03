@@ -8,6 +8,7 @@ import {connect, useDispatch} from "react-redux";
 import constants from "../../constants";
 import {deleteCourse} from "../../store/action/courseAction";
 import {useNavigate} from "react-router-dom";
+import {getCourses} from "../../service/courseApi";
 
 const Empty = () => (
     <StyledText>Data Kosong...</StyledText>
@@ -45,12 +46,8 @@ const List = ({data}) => {
     )
 }
 
-const mapStateToProps = state => ({
-    listData : state.courses.courseList,
-    pagination: state.courses.pagination
-})
-
-export default connect(mapStateToProps, null) (withPaginationList(List, {
+export default withPaginationList(List, {
     label : "Course List",
-    navAdd : constants.ROUTES.ADD_COURSE
-}));
+    navAdd : constants.ROUTES.ADD_COURSE,
+    query: getCourses
+});

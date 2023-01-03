@@ -6,34 +6,45 @@ import {FormInput, StyledContainer} from "../../components";
 
 import {StyledTitle} from "./styles";
 import useAddCourse from "./useAddCourse";
-import {addCourse, onAddCourse} from "../../store/action/courseAction";
+import {addCourse} from "../../service/courseApi";
 import {connect, useDispatch} from "react-redux";
 import constants from "../../constants";
 import {useNavigate} from "react-router-dom";
+import useFetchMutation from "../../hooks/useFetchMutation";
 
 const FORM_LIST = [
-    { id: "title", label: "Title", type: "text", placeholder: "Enter course title" },
-    { id: "description", label: "Description", type: "textarea", placeholder: "Enter course description" },
-    { id: "courseTypeId", label: "Course Type Id", type: "text", placeholder: "Enter course type id" },
-    { id: "courseFile", label: "Course Material", type: "file", placeholder: "Choose course material" },
-    { id: "level", label: "Level", type: "text", placeholder: "Enter course level" },
-    { id: "duration", label: "Duration", type: "text", placeholder: "Enter course duration" }
+    {id: "title", label: "Title", type: "text", placeholder: "Enter course title"},
+    {id: "description", label: "Description", type: "textarea", placeholder: "Enter course description"},
+    {id: "courseTypeId", label: "Course Type Id", type: "text", placeholder: "Enter course type id"},
+    {id: "courseFile", label: "Course Material", type: "file", placeholder: "Choose course material"},
+    {id: "level", label: "Level", type: "text", placeholder: "Enter course level"},
+    {id: "duration", label: "Duration", type: "text", placeholder: "Enter course duration"}
 ]
 
-const AddCourse = ({addCourse}) => {
-    const { getter, setter } = useAddCourse();
-    const dispatch = useDispatch();
+const AddCourse = () => {
+    const {getter, setter} = useAddCourse();
     const onNavigate = useNavigate();
+    const {fetchMutation,loading} = useFetchMutation(addCourse, ()=> onNavigate(constants.ROUTES.COURSE_LIST));
+
+
     const handleSubmit = () => {
-        addCourse(getter)
-        onNavigate(constants.ROUTES.COURSE_LIST)
+        const payload = new FormData();
+        payload.append("title", getter.title);
+        payload.append("description", getter.description);
+        payload.append("courseTypeId", getter.courseTypeId);
+        payload.append("file", getter.courseFile);
+        payload.append("duration", getter.duration);
+        payload.append("level", getter.level);
+
+        fetchMutation(payload)
+
     }
 
     return (
         <StyledContainer>
             <StyledTitle>Add Course</StyledTitle>
             <Form>
-                { FORM_LIST.map(item => (
+                {FORM_LIST.map(item => (
                     <FormInput
                         label={item.label}
                         type={item.type}
@@ -42,9 +53,9 @@ const AddCourse = ({addCourse}) => {
                         placeholder={item.placeholder}
                         key={item.id}
                     />
-                )) }
+                ))}
                 <ButtonGroup>
-                    <Button variant="success" onClick={handleSubmit} disabled={getter.isDisable}>
+                    <Button variant="success" onClick={handleSubmit} disabled={getter.isDisable || loading}>
                         Submit
                     </Button>
                     <Button variant="secondary" onClick={() => onNavigate(constants.ROUTES.COURSE_LIST)}>
@@ -56,8 +67,4 @@ const AddCourse = ({addCourse}) => {
     )
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    addCourse: course => dispatch(addCourse(course))
-})
-
-export default connect(null, mapDispatchToProps) (AddCourse);
+export default AddCourse;

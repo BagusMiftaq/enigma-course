@@ -1,4 +1,6 @@
 import store from "../store/store";
+import api from "../config/api";
+
 
 export const getCourseById = (id) =>{
     console.log(store);
@@ -16,4 +18,18 @@ export const getCourseTypeById = (id) =>{
     return courseList.filter((courseType)=>{
         return courseType.courseTypeId === id;
     })?.[0]
+}
+
+export const getCourses = (page) => api.get("/courses", {
+    params:{
+        page
+    }
+})
+
+export const addCourse = (data) => {
+    return api.post("/courses", data, {
+        headers : {
+            "Content-type" : "multipart/form-data"
+        }
+    })
 }
