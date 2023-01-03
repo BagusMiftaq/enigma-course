@@ -3,9 +3,9 @@ import {Component} from "react";
 import {FormFile, FormText} from "../index";
 
 
-const FormInput = ({
+const FormInput = (
     props
-}) => {
+) => {
     let Component;
     switch (props.type){
         case "file":
