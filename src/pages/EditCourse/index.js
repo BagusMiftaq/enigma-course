@@ -1,11 +1,13 @@
 import React from "react";
-import {getCourseById} from "../../service/courseApi"
-import {editCourse} from "../../store/action/courseAction";
+import {getCourseById, updateCourse} from "../../service/courseApi"
 import constants from "../../constants";
-import {FormInput, StyledContainer} from "../../components";
+import {FormInput, StyledContainer, FormSelect, FormFile} from "../../components";
 import {Button, ButtonGroup, Form} from "react-bootstrap";
-import {connect} from "react-redux";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import useFetchQuery from "../../hooks/useFetchQuery";
+import {onChangeText} from "../../utils/eventHandlers";
+import {getCourseType} from "../../service/courseTypeApi";
+import useFetchMutation from "../../hooks/useFetchMutation";
 
 const initialData = {
     title: "",
@@ -20,22 +22,30 @@ const initialData = {
 
 }
 
-const EditCourse = ({editCourse}) => {
-    const [data, setData] = React.useState(initialData);
+const EditCourse = () => {
+    const [course, setCourse] = React.useState(initialData);
     const onNavigate = useNavigate();
     const params = useParams();
-    // const param = useLocation(params);
+    const {data: courseResponse} = useFetchQuery(getCourseById, params.courseId)
+    const {data: courseTypeData} = useFetchQuery(getCourseType);
+    const {fetchMutation: updateCourseMutation} = useFetchMutation(
+        updateCourse,()=>onNavigate(constants.ROUTES.COURSE_LIST));
+
     React.useEffect(() => {
-        const course = getCourseById(params.courseId);
-
-        course.duration = course.courseInfo.duration;
-        course.level = course.courseInfo.level;
-
-        setData(course);
-    }, [params.courseId])
+        const currentCourse = {
+            courseId: courseResponse?.data?.courseId,
+            title: courseResponse?.data?.title,
+            description: courseResponse?.data?.description,
+            courseFile: courseResponse?.data?.link,
+            courseTypeId: courseResponse?.data?.courseType?.courseTypeId,
+            level: courseResponse?.data?.courseInfo?.level,
+            duration: courseResponse?.data?.courseInfo.duration
+        }
+        setCourse(currentCourse);
+    }, [courseResponse])
 
     const handleChange = (name) => (e) => {
-        setData((prevData) => ({
+        setCourse((prevData) => ({
             ...prevData,
             [name]: e.target.value
         }))
@@ -45,17 +55,12 @@ const EditCourse = ({editCourse}) => {
         e.preventDefault();
         const payload = {
             courseId: params.courseId,
-            ...data,
-            courseInfo:{
-                duration:data.duration,
-                level:data.level
-            },
+            ...course
         };
         delete payload.file;
-        delete payload.courseTypeId;
 
-        editCourse(payload)
-        onNavigate(constants.ROUTES.COURSE_LIST)
+       updateCourseMutation(payload)
+
     }
 
     const handleCancel = (e) => {
@@ -70,37 +75,44 @@ const EditCourse = ({editCourse}) => {
                     label={"Title"}
                     type={"text"}
                     placeholder={"Enter title"}
-                    value={data.title}
+                    value={course?.title}
                     onChange={handleChange("title")}/>
                 <FormInput
                     label={"Description"}
                     type={"textarea"}
                     placeholder={"Enter description"}
-                    value={data.description}
+                    value={course?.description}
                     onChange={handleChange("description")}/>
-                <FormInput
-                    label={"Course Type Id"}
-                    type={"text"}
-                    placeholder={"Enter course type"}
-                    value={data.courseType.courseTypeId}
-                    disabled={true}/>
-                <FormInput
-                    label={"Course Material"}
-                    type={"file"}
-                    id={"file"}
-                    disabled={true}/>
                 <FormInput
                     label={"Duration"}
                     type={"text"}
                     placeholder={"Enter duration"}
-                    value={data.duration}
+                    value={course?.duration}
                     onChange={handleChange("duration")}/>
                 <FormInput
                     label={"Level"}
                     type={"text"}
                     placeholder={"Enter level"}
-                    value={data.level}
+                    value={course?.level}
                     onChange={handleChange("level")}/>
+                <FormFile
+                    label={"Course Material"}
+                    placeholder={"Choose course material"}
+                    disabled
+                    value={course?.courseFile}
+                />
+                <FormSelect
+                    label={"Course Type Id"}
+                    placeholder={"Select course type"}
+                    onChange={handleChange("courseTypeId")}
+                    values={courseTypeData?.data?.map((item)=>({
+                            id : item.courseTypeId,
+                            label : item.typeName
+                        }
+                    ))}
+                    value={course?.courseTypeId}
+                    disabled
+                />
 
                 <ButtonGroup size={"lg"}>
                     <Button onClick={handleSubmit} variant={"success"}>Update</Button>
@@ -111,11 +123,4 @@ const EditCourse = ({editCourse}) => {
     )
 
 }
-
-const mapDispacthToProps = (dispatch) => {
-    return{
-    editCourse: (data) => dispatch(editCourse(data))
-    }
-}
-
-export default connect(null, mapDispacthToProps)(EditCourse);
+export default EditCourse;

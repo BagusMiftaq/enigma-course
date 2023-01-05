@@ -1,6 +1,6 @@
 import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import {Component} from "react";
-import {FormFile, FormText} from "../index";
+import {FormFile, FormSelect, FormText} from "../index";
 
 
 const FormInput = (
@@ -10,6 +10,9 @@ const FormInput = (
     switch (props.type){
         case "file":
             Component = FormFile
+            break;
+        case "select":
+            Component = FormSelect
             break;
         default:
             Component = FormText

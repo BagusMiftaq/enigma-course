@@ -6,18 +6,19 @@ import CourseItem from "./components/CourseItem";
 import withPaginationList from "../../hoc/withPaginationList";
 import {connect, useDispatch} from "react-redux";
 import constants from "../../constants";
-import {deleteCourse} from "../../store/action/courseAction";
-import {useNavigate} from "react-router-dom";
+import {deleteCourse} from "../../service/courseApi";
+import {useNavigate, useParams} from "react-router-dom";
 import {getCourses} from "../../service/courseApi";
+import useFetchMutation from "../../hooks/useFetchMutation";
+import useFetchQuery from "../../hooks/useFetchQuery";
 
 const Empty = () => (
     <StyledText>Data Kosong...</StyledText>
 )
 
-const List = ({data}) => {
-
-    const dispacth = useDispatch();
+const List = ({data, refetch}) => {
     const onNavigate = useNavigate();
+    const {fetchMutation: delCourse} = useFetchMutation(deleteCourse, refetch);
     const onNavigateToEdit = (id) => () => {
         onNavigate(`${constants.ROUTES.EDIT_COURSE}/${id}`);
         // console.log("Routes",`${constants.ROUTES.EDIT_COURSE}/${id}`)
@@ -26,8 +27,9 @@ const List = ({data}) => {
     const onDelete = (id)=> () => {
         const  isOk= window.confirm("Are U sure want to delete it?");
         if(isOk){
-            dispacth(deleteCourse(id))
+            delCourse(id);
         }
+
     }
 
     return (

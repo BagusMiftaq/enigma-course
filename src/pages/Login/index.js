@@ -1,15 +1,17 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import useToken from "../../hooks/useToken";
+import token from "../../utils/token";
 import constants from "../../constants";
 import {Button, Form} from "react-bootstrap";
 import {onChangeText} from "../../utils/eventHandlers";
 import {StyledContainer, FormText} from "../../components";
+import useFetchMutation from "../../hooks/useFetchMutation";
+import {login} from "../../service/authApi";
 function Login(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const onNavigate = useNavigate();
-    const {setToken} = useToken();
+    const {fetchMutation: onLogin, loading}= useFetchMutation(login, ()=>onNavigate(constants.ROUTES.DASHBOARD))
 
     function validateForm(){
         const emailInDb = "enigma@enigma.com";
@@ -19,8 +21,7 @@ function Login(){
 
     function handleSubmit(event){
         event.preventDefault();
-        setToken({token:"ini adalah token"});
-        onNavigate(constants.ROUTES.DASHBOARD);
+        onLogin({email, password});
     }
 
     return (

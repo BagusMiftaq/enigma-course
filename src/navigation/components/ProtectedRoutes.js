@@ -1,11 +1,11 @@
 import constants from "../../constants";
-import useToken from "../../hooks/useToken";
+import {getToken} from "../../utils/token";
 import {Navigate, Outlet} from "react-router-dom";
 import {NavBar} from "../../components";
 
 const {ROUTES} = constants;
 const ProtectedRoutes = () => {
-    const {token} = useToken();
+    const token = getToken();
     if(!token){
         return <Navigate to={ROUTES.LOGIN} replace/>
     }

@@ -3,12 +3,7 @@ import api from "../config/api";
 
 
 export const getCourseById = (id) =>{
-    console.log(store);
-    const courseList = store.getState().courses?.courseList;
-
-    return courseList.filter((course)=>{
-        return course.courseId === id;
-    })?.[0]
+    return api.get("/courses/"+id);
 }
 
 export const getCourseTypeById = (id) =>{
@@ -32,4 +27,12 @@ export const addCourse = (data) => {
             "Content-type" : "multipart/form-data"
         }
     })
+}
+
+export const updateCourse = (course) => {
+    return api.put("/courses/"+course.courseId, course);
+}
+
+export const deleteCourse = (id) => {
+    return api.delete("/courses/"+id);
 }

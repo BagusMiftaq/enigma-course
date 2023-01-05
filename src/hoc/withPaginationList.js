@@ -9,7 +9,7 @@ export default (ListComponent, opts) => {
         const  onNavigate=useNavigate();
         const { label, navAdd, query} = opts;
         const [currentPage, setCurrentPage] = React.useState(1);
-        const {data, loading, error} = useFetchQuery(query, currentPage)
+        const {data, loading, error, refetch} = useFetchQuery(query, currentPage)
 
         // console.log("Data yaa", data);
 
@@ -21,7 +21,7 @@ export default (ListComponent, opts) => {
                 <StyledContainer>
                     <Button variant="success" onClick={() => onNavigate(navAdd)}>Add {label}</Button>
                     {data?.data?.length > 0 ? (
-                        <ListComponent data={data.data} {...props}/>
+                        <ListComponent data={data.data} {...props} refetch={refetch}/>
                     ): <EmptyState text={`Data ${label} Kosong...`} />}
                 </StyledContainer>
                 <Pagination

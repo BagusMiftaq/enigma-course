@@ -5,3 +5,4 @@ export {default as Pagination} from "./Pagination";
 export {default as NavBar} from "./NavBar";
 export {default as FormText} from "./FormText";
 export {default as FormFile} from "./FormFile";
+export {default as FormSelect} from "./FormSelect";
