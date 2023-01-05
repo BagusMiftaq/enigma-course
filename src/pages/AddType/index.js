@@ -3,27 +3,27 @@ import {StyledTitle} from "../AddCourse/styles";
 import {Button, ButtonGroup, Form} from "react-bootstrap";
 import {FormInput, StyledContainer} from "../../components";
 import React from "react";
-import {connect, useDispatch} from "react-redux";
-import {addCourseType} from "../../store/action/courseTypeAction";
 import constants from "../../constants";
 import {useNavigate} from "react-router-dom";
+import useFetchMutation from "../../hooks/useFetchMutation";
+import {addCourseType} from "../../service/courseTypeApi";
 
 const FORM_LIST = [
     {id: "typeName", label: "Course Type Name", type: "text", placeholder: "Enter course type"}
 ]
 
-const AddType = ({addCourseType}) => {
+const AddType = () => {
     const {getter, setter} = useTypeCourse();
-    const dispatch = useDispatch();
     const onNavigate = useNavigate();
-
+    const {fetchMutation, loading} = useFetchMutation(addCourseType, ()=>onNavigate(constants.ROUTES.COURSE_TYPE))
 
     const handleSubmit = () => {
-        addCourseType(getter)
-        onNavigate(constants.ROUTES.COURSE_TYPE)
-    }
+        const payload = new FormData();
+        payload.append("typeName", getter.typeName);
 
-    console.log(getter)
+        fetchMutation(payload);
+
+    }
 
     return (
         <StyledContainer>
@@ -40,7 +40,7 @@ const AddType = ({addCourseType}) => {
                     />
                 ))}
                 <ButtonGroup>
-                    <Button variant="success" onClick={handleSubmit} disabled={getter.isDisable}>
+                    <Button variant="success" onClick={handleSubmit} disabled={getter.isDisable || loading}>
                         Submit
                     </Button>
                     <Button variant="secondary" onClick={() => onNavigate(constants.ROUTES.COURSE_TYPE)}>
@@ -52,8 +52,4 @@ const AddType = ({addCourseType}) => {
     )
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    addCourseType: courseType => dispatch(addCourseType(courseType))
-})
-
-export default connect(null, mapDispatchToProps) (AddType);
+export default AddType;

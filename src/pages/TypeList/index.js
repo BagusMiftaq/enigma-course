@@ -1,31 +1,29 @@
 import React from "react";
 
-import typeList from "../../fixtures/courseType.json";
 import withPaginationList from "../../hoc/withPaginationList";
 
 import TypeItem from "./components/TypeItem";
-import {connect, useDispatch} from "react-redux";
 import {StyledListGroup, StyledText} from "./styles";
 import constants from "../../constants";
-import {deleteCourseType} from "../../store/action/courseTypeAction";
 import {useNavigate} from "react-router-dom";
+import {deleteType, getCourseType} from "../../service/courseTypeApi";
+import useFetchMutation from "../../hooks/useFetchMutation";
 
 const Empty = () => (
     <StyledText>Data Kosong...</StyledText>
 )
 
-const List = ({data}) => {
-
-    const dispacth = useDispatch();
+const List = ({data, refetch}) => {
     const onNavigate = useNavigate();
-    const onNavigateToEdit = (id) => () => {
-        onNavigate(`${constants.ROUTES.EDIT_COURSE_TYPE}/${id}`);
+    const {fetchMutation: delType} = useFetchMutation(deleteType, refetch);
+    const onNavigateToEdit = (typeName) => () => {
+        onNavigate(`${constants.ROUTES.EDIT_COURSE_TYPE}/?typeName=${typeName}`);
     }
 
     const onDelete = (id) => () => {
         const isOk = window.confirm(("Are U sure want to delete it?"));
         if (isOk){
-            dispacth(deleteCourseType(id))
+            delType(id);
         }
     }
 
@@ -35,7 +33,7 @@ const List = ({data}) => {
                 <TypeItem
                     data={item}
                     key={item.courseTypeId}
-                    onNavigateToEdit={onNavigateToEdit(item.courseTypeId)}
+                    onNavigateToEdit={onNavigateToEdit(item.typeName)}
                     onDelete={onDelete(item.courseTypeId)}
                 />
             ))}
@@ -43,12 +41,8 @@ const List = ({data}) => {
     )
 }
 
-const mapStateToProps = state => ({
-    listData : state.coursesType.typeList,
-    pagination: state.coursesType.pagination
-})
-
-export default connect(mapStateToProps, null) (withPaginationList(List, {
+export default withPaginationList(List, {
     label: "Course Type",
     navAdd: constants.ROUTES.ADD_COURSE_TYPE,
-}));
+    query: getCourseType
+});

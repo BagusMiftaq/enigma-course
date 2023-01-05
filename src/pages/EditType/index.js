@@ -1,25 +1,34 @@
-import {getCourseTypeById} from "../../service/courseApi";
+import {getCourseTypeByName, updateType} from "../../service/courseTypeApi";
 import constants from "../../constants";
 import {FormInput, StyledContainer} from "../../components";
 import {Button, ButtonGroup, Form} from "react-bootstrap";
 import React from "react";
-import {editCourseType} from "../../store/action/courseTypeAction";
-import {connect} from "react-redux";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
+import useFetchQuery from "../../hooks/useFetchQuery";
+import useFetchMutation from "../../hooks/useFetchMutation";
 
 const initialData = {
     typeName: ""
 }
 
-const EditType = ({editCourseType}) => {
+const EditType = () => {
     const [data, setData] = React.useState(initialData);
     const onNavigate = useNavigate();
-    const param = useParams();
-    React.useEffect(()=>{
-        const courseType = getCourseTypeById(param.id);
-        setData(courseType);
-    }, [param.id])
+    const [param] = useSearchParams();
+    const {data:courseTypeData} = useFetchQuery(getCourseTypeByName, param.get('typeName'));
+    const {fetchMutation: updateCourseTypeMutation} = useFetchMutation(
+        updateType, ()=>onNavigate(constants.ROUTES.COURSE_TYPE)
+    )
 
+    console.log(courseTypeData);
+    React.useEffect(()=>{
+        const courseType = {
+            courseTypeId: courseTypeData?.data?.[0].courseTypeId,
+            typeName: courseTypeData?.data?.[0].typeName
+        }
+        setData(courseType);
+        console.log(courseType);
+    }, [courseTypeData])
     const handleChange = (name) => (e) => {
         setData((prevData)=>({
             ...prevData,
@@ -30,12 +39,10 @@ const EditType = ({editCourseType}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const payload = {
-            courseTypeId: param.id,
             ...data
         };
 
-        editCourseType(payload)
-        onNavigate(constants.ROUTES.COURSE_TYPE)
+        updateCourseTypeMutation(payload)
     }
 
     const handleCancel = (e) => {
@@ -62,11 +69,5 @@ const EditType = ({editCourseType}) => {
     )
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return{
-        editCourseType: (data) => dispatch(editCourseType(data))
-    }
-}
-
-export default connect(null, mapDispatchToProps)(EditType);
+export default EditType;
 

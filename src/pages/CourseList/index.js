@@ -4,13 +4,11 @@ import {StyledListGroup, StyledText} from "./styles";
 import CourseItem from "./components/CourseItem";
 
 import withPaginationList from "../../hoc/withPaginationList";
-import {connect, useDispatch} from "react-redux";
 import constants from "../../constants";
 import {deleteCourse} from "../../service/courseApi";
 import {useNavigate, useParams} from "react-router-dom";
 import {getCourses} from "../../service/courseApi";
 import useFetchMutation from "../../hooks/useFetchMutation";
-import useFetchQuery from "../../hooks/useFetchQuery";
 
 const Empty = () => (
     <StyledText>Data Kosong...</StyledText>

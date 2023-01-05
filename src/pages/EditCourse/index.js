@@ -5,7 +5,6 @@ import {FormInput, StyledContainer, FormSelect, FormFile} from "../../components
 import {Button, ButtonGroup, Form} from "react-bootstrap";
 import {useNavigate, useParams} from "react-router-dom";
 import useFetchQuery from "../../hooks/useFetchQuery";
-import {onChangeText} from "../../utils/eventHandlers";
 import {getCourseType} from "../../service/courseTypeApi";
 import useFetchMutation from "../../hooks/useFetchMutation";
 
@@ -55,7 +54,8 @@ const EditCourse = () => {
         e.preventDefault();
         const payload = {
             courseId: params.courseId,
-            ...course
+            ...course,
+
         };
         delete payload.file;
 
@@ -111,7 +111,6 @@ const EditCourse = () => {
                         }
                     ))}
                     value={course?.courseTypeId}
-                    disabled
                 />
 
                 <ButtonGroup size={"lg"}>

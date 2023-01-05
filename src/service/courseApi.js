@@ -1,18 +1,8 @@
-import store from "../store/store";
 import api from "../config/api";
 
 
 export const getCourseById = (id) =>{
     return api.get("/courses/"+id);
-}
-
-export const getCourseTypeById = (id) =>{
-    console.log(store);
-    const courseList = store.getState().coursesType?.typeList;
-
-    return courseList.filter((courseType)=>{
-        return courseType.courseTypeId === id;
-    })?.[0]
 }
 
 export const getCourses = (page) => api.get("/courses", {
