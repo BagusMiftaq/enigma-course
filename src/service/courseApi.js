@@ -26,3 +26,27 @@ export const updateCourse = (course) => {
 export const deleteCourse = (id) => {
     return api.delete("/courses/"+id);
 }
+
+export const downloadCourse = async(filename) => {
+    try {
+        const response = await api.get("/course-files",{
+            responseType: "blob",
+            params : {
+                filename
+            }
+        })
+
+        const courseFile = new Blob([response.data]);
+        const url = window.URL.createObjectURL(courseFile);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(document.body.lastChild);
+
+
+    } catch (e){
+        alert("Download Failed")
+    }
+}

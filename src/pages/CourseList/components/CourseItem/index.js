@@ -2,7 +2,7 @@ import React from "react";
 import {StyledListItem} from "./styles";
 import {Button, ButtonGroup, Col} from "react-bootstrap";
 
-const CourseItem = ({data, onNavigateToEdit, onDelete}) => {
+const CourseItem = ({data, onNavigateToEdit, onDelete, onDowload}) => {
     // console.log("test",data?.description)
     return (
         <StyledListItem action>
@@ -13,7 +13,7 @@ const CourseItem = ({data, onNavigateToEdit, onDelete}) => {
             <ButtonGroup>
                 <Button variant="primary" onClick={onNavigateToEdit}>Edit</Button>
                 <Button variant="danger" onClick={onDelete}>Delete</Button>
-                <Button variant="secondary">Download</Button>
+                <Button variant="secondary" onClick={onDowload}>Download</Button>
             </ButtonGroup>
         </StyledListItem>
     )

@@ -5,7 +5,7 @@ import CourseItem from "./components/CourseItem";
 
 import withPaginationList from "../../hoc/withPaginationList";
 import constants from "../../constants";
-import {deleteCourse} from "../../service/courseApi";
+import {deleteCourse, downloadCourse} from "../../service/courseApi";
 import {useNavigate, useParams} from "react-router-dom";
 import {getCourses} from "../../service/courseApi";
 import useFetchMutation from "../../hooks/useFetchMutation";
@@ -30,6 +30,17 @@ const List = ({data, refetch}) => {
 
     }
 
+    const onDownload = (fileLink) => (e) => {
+        e.preventDefault();
+        console.log("File", fileLink);
+
+        const pathArr = fileLink?.split("/");
+        const filename =pathArr[pathArr.length-1];
+        console.log(filename)
+
+        downloadCourse(filename);
+    }
+
     return (
         <>
             <StyledListGroup>
@@ -39,6 +50,7 @@ const List = ({data, refetch}) => {
                         key={item?.courseId}
                         onNavigateToEdit={onNavigateToEdit(item.courseId)}
                         onDelete={onDelete(item.courseId)}
+                        onDowload={onDownload(item.link)}
                     />
                 ))}
             </StyledListGroup>

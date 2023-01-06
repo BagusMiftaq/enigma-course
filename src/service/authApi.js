@@ -5,6 +5,7 @@ export const login = async (data) => {
     try {
         const response = await api.post("/auth/login", data)
         const token = response?.data?.data;
+        console.log(response)
         if (token){
             saveToken({token});
         }
