@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render FormText correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="mb-3"
+  >
+    <label
+      class="form-label"
+    >
+      this is label
+    </label>
+    <input
+      class="form-control is-valid"
+      placeholder="this is placeholder"
+      type="text"
+      value="[object Object]"
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Should render FormText correctly 2`] = `
+<DocumentFragment>
+  <div
+    class="mb-3"
+  >
+    <label
+      class="form-label"
+    >
+      this is label
+    </label>
+    <textarea
+      class="form-control is-valid"
+      placeholder="this is placeholder"
+    >
+      [object Object]
+    </textarea>
+  </div>
+</DocumentFragment>
+`;

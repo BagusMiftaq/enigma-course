@@ -4,7 +4,7 @@ import {onChangeFile, onChangeText} from "../../utils/eventHandlers";
 const useAddCourse = () => {
     const [title, setTitle] = React.useState("");
     const [description, setDescription] = React.useState("");
-    const [courseTypeId, setCourseTypeId] = React.useState("");
+    const [courseTypeId, setCourseTypeId] = React.useState();
     const [courseFile, setCourseFile] = React.useState("");
     const [level, setLevel] = React.useState("");
     const [duration, setDuration] = React.useState("");
